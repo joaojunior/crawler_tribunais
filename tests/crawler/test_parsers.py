@@ -47,3 +47,11 @@ def test_parser_general_data_is_ok(general_data):
                 'Juiz': 'Zidiel Infantino Coutinho',
                 'Valor da ação': 'R$ 10.000,00'}
     assert expected == parsers.general_data(general_data)
+
+
+def test_parser_is_ok(process):
+    expected_keys = ['Dados do processo', 'Partes do processo',
+                     'Movimentações']
+
+    actual = parsers.process(process)
+    assert expected_keys == list(actual.keys())

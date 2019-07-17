@@ -3,6 +3,22 @@ from typing import Dict, List
 import requests_html
 
 
+def process(process_data: requests_html.Element) -> Dict:
+    result = {'Dados do processo': {}, 'Partes do processo': [],
+              'Movimentações': []}
+    process_general_data = process_data.xpath(
+        "//table[contains(@class, 'secaoFormBody')]")[1]
+    result['Dados do processo'] = general_data(process_general_data)
+
+    process_parts = process_data.find('#tableTodasPartes', first=True)
+    result['Partes do processo'] = parts(process_parts)
+
+    process_movements = process_data.find(
+        '#tabelaUltimasMovimentacoes', first=True)
+    result['Movimentações'] = movements(process_movements)
+    return result
+
+
 def movements(process: requests_html.Element) -> List[Dict]:
     rows = process.xpath('//tr')
     result = []
