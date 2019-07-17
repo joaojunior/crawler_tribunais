@@ -1,6 +1,7 @@
 from unittest.mock import Mock, patch
 
 import pytest
+from requests.exceptions import ConnectTimeout
 
 
 from crawler import crawlers
@@ -20,3 +21,10 @@ def test_crawler_response_when_found_process(mock_session, method, process):
     expected = process
     process_number = '0821901-51.2018.8.12.0001'
     assert expected.html == method(process_number)
+
+
+def test_crawler_exceed_timeout_raise_error():
+    url = 'https://esaj.tjms.jus.br/cposg5/search.do'
+
+    with pytest.raises(ConnectTimeout):
+        crawlers.get_page(url, {}, timeout=0.001)
