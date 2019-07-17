@@ -55,3 +55,11 @@ def test_parser_is_ok(process):
 
     actual = parsers.process(process)
     assert expected_keys == list(actual.keys())
+
+
+def test_parser_process_not_found_is_ok(process_not_found):
+    expected = {'Dados do processo': {}, 'Partes do processo': [],
+                'Movimentações': []}
+
+    actual = parsers.process(process_not_found)
+    assert expected == actual

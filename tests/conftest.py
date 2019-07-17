@@ -12,6 +12,15 @@ def process() -> HTML:
     return html
 
 
+@pytest.fixture()
+def process_not_found() -> HTML:
+    doc = ''
+    with open('tests/process_not_found.html') as f:
+        doc = f.read()
+    html = HTML(html=doc)
+    return html
+
+
 @pytest.fixture
 def movements(process: HTML) -> Element:
     return process.find('#tabelaUltimasMovimentacoes', first=True)
