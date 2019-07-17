@@ -8,7 +8,9 @@ from crawler import crawlers
 
 @pytest.mark.parametrize('method', [
     crawlers.get_page_from_first_instance_TJAL,
-    crawlers.get_page_from_second_instance_TJAL])
+    crawlers.get_page_from_second_instance_TJAL,
+    crawlers.get_page_from_first_instance_TJMS,
+    crawlers.get_page_from_second_instance_TJMS])
 @patch('crawler.crawlers.HTMLSession')
 def test_crawler_response_when_found_process(mock_session, method, process):
     instance = mock_session.return_value
