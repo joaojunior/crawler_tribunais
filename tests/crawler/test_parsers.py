@@ -1,7 +1,7 @@
 from crawler import parsers
 
 
-def test_parser_movements_is_ok(movements):
+def test_parser_movements_return_correct_list(movements):
     expected = [{'data': '25/11/2018',
                  'movimento': ('Informação do Sistema\nPJMS - Certidão de '
                                'realização de consulta de repetiçaõ de ação')},
@@ -24,7 +24,7 @@ def test_parser_movements_is_ok(movements):
     assert expected == parsers.movements(movements)
 
 
-def test_parser_process_parts_is_ok(parts):
+def test_parser_process_parts_return_correct_list(parts):
     expected = [
         [{'Autora': 'Leidi Silva Ormond Galvão'},
          {'Advogada': 'Adriana Catelan Skowronski'},
@@ -40,7 +40,7 @@ def test_parser_process_parts_is_ok(parts):
     assert expected == parsers.parts(parts)
 
 
-def test_parser_general_data_is_ok(general_data):
+def test_parser_general_data_return_correct_dict(general_data):
     expected = {'Classe': 'Procedimento Comum Cível', 'Área': 'Cível',
                 'Assunto': 'Enquadramento',
                 'Distribuição': '30/07/2018 às 12:39 - Automática',
@@ -49,7 +49,7 @@ def test_parser_general_data_is_ok(general_data):
     assert expected == parsers.general_data(general_data)
 
 
-def test_parser_is_ok(process):
+def test_parser_return_correct_keys(process):
     expected_keys = ['Dados do processo', 'Partes do processo',
                      'Movimentações']
 
@@ -57,7 +57,7 @@ def test_parser_is_ok(process):
     assert expected_keys == list(actual.keys())
 
 
-def test_parser_process_not_found_is_ok(process_not_found):
+def test_parser_process_not_found_and_return_empty_values(process_not_found):
     expected = {'Dados do processo': {}, 'Partes do processo': [],
                 'Movimentações': []}
 
