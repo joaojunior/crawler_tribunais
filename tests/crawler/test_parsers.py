@@ -38,3 +38,12 @@ def test_parser_process_parts_is_ok(parts):
         [{'Réu': 'Estado de Mato Grosso do Sul'},
          {'RepreLeg': 'Procuradoria Geral do Estado de Mato Grosso do Sul'}]]
     assert expected == parsers.parts(parts)
+
+
+def test_parser_general_data_is_ok(general_data):
+    expected = {'Classe': 'Procedimento Comum Cível', 'Área': 'Cível',
+                'Assunto': 'Enquadramento',
+                'Distribuição': '30/07/2018 às 12:39 - Automática',
+                'Juiz': 'Zidiel Infantino Coutinho',
+                'Valor da ação': 'R$ 10.000,00'}
+    assert expected == parsers.general_data(general_data)

@@ -20,3 +20,8 @@ def movements(process: HTML) -> Element:
 @pytest.fixture
 def parts(process: HTML) -> Element:
     return process.find('#tableTodasPartes', first=True)
+
+
+@pytest.fixture
+def general_data(process: HTML) -> Element:
+    return process.xpath("//table[contains(@class, 'secaoFormBody')]")[1]
