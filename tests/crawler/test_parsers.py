@@ -1,7 +1,7 @@
 from crawler import parsers
 
 
-def test_parser_movements(movements):
+def test_parser_movements_is_ok(movements):
     expected = [{'data': '25/11/2018',
                  'movimento': ('Informação do Sistema\nPJMS - Certidão de '
                                'realização de consulta de repetiçaõ de ação')},
@@ -22,3 +22,19 @@ def test_parser_movements(movements):
                                'Publicação: 08/10/2018 Número do Diário: 4126')
                  }]
     assert expected == parsers.movements(movements)
+
+
+def test_parser_process_parts_is_ok(parts):
+    expected = [
+        [{'Autora': 'Leidi Silva Ormond Galvão'},
+         {'Advogada': 'Adriana Catelan Skowronski'},
+         {'Advogada': 'Ana Silvia Pessoa Salgado de Moura'}],
+        [{'Autora': 'Melissa Chaves Miranda'},
+         {'Advogada': 'Adriana Catelan Skowronski'},
+         {'Advogada': 'Ana Silvia Pessoa Salgado de Moura'}],
+        [{'Autora': 'Ruzymar Campos de Oliveira'},
+         {'Advogada': 'Adriana Catelan Skowronski'},
+         {'Advogada': 'Ana Silvia Pessoa Salgado de Moura'}],
+        [{'Réu': 'Estado de Mato Grosso do Sul'},
+         {'RepreLeg': 'Procuradoria Geral do Estado de Mato Grosso do Sul'}]]
+    assert expected == parsers.parts(parts)
