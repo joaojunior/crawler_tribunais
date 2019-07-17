@@ -1,7 +1,7 @@
 from requests_html import HTMLSession
 
 
-def get_page_from_first_instance_TJAL(process_number: str):
+def get_page_from_first_instance_TJAL(process_number: str) -> str:
     url = 'https://www2.tjal.jus.br/cpopg/search.do'
     params = {
         'cbPesquisa': 'NUMPROC',
@@ -13,7 +13,7 @@ def get_page_from_first_instance_TJAL(process_number: str):
     return get_page(url, params)
 
 
-def get_page_from_second_instance_TJAL(process_number: str):
+def get_page_from_second_instance_TJAL(process_number: str) -> str:
     url = 'https://www2.tjal.jus.br/cposg5/search.do?'
     params = {
               'cbPesquisa': 'NUMPROC',
@@ -26,7 +26,7 @@ def get_page_from_second_instance_TJAL(process_number: str):
     return get_page(url, params)
 
 
-def get_page_from_first_instance_TJMS(process_number: str):
+def get_page_from_first_instance_TJMS(process_number: str) -> str:
     url = 'https://esaj.tjms.jus.br/cpopg5/search.do'
     params = {
         'cbPesquisa': 'NUMPROC',
@@ -38,7 +38,7 @@ def get_page_from_first_instance_TJMS(process_number: str):
     return get_page(url, params)
 
 
-def get_page_from_second_instance_TJMS(process_number: str):
+def get_page_from_second_instance_TJMS(process_number: str) -> str:
     url = 'https://esaj.tjms.jus.br/cposg5/search.do'
     params = {
         'cbPesquisa': 'NUMPROC',
