@@ -39,11 +39,10 @@ def parts(process_parts: requests_html.Element) -> List[List[Dict]]:
     result = []
     for row in rows:
         data = []
-        values = row.text.replace('\xa0 ', '').replace('\xa0', '').replace(
-            ':\n', ':').split('\n')
+        values = row.text.replace('\xa0', '').replace(':\n', ':').split('\n')
         for value in values:
             value = value.split(':')
-            data.append({value[0]: value[1]})
+            data.append({value[0]: value[1].strip()})
         result.append(data)
     return result
 
