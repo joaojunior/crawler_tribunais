@@ -98,3 +98,25 @@ class TestSecondGradeProcess:
             {'data': '03/05/2019',
              'movimento': 'Publicado\nDisponibilizado no DJE de 03/05/2019.'}]
         assert expected == parsers.movements(second_movements)
+
+    def test_parser_process_parts_return_correct_list(self, second_parts):
+        expected = [
+            [{'Apelante': 'Importadora Auto Peças Ltda'},
+             {'Advogada': 'Roberta Eulália V. Lyra'},
+             {'Advogado': 'Andréa Lyra Maranhão'},
+             {'Advogado': 'Leonardo Mafra Costa'},
+             {'Advogado': 'Marina Vilela de Castro Loyola Caju'},
+             {'Advogado': 'Pedro Henrique Pedrosa Nogueira'},
+             {'Advogada': 'Daniela Nobre de Melo Nogueira'},
+             {'Advogado': 'Rolland Marques de Meira'},
+             {'Advogado': 'Antônio Jakson M. S. Cavalcanti'},
+             {'Advogada': 'Flávia Nobre de Melo'},
+             {'Advogada': 'Daniella Mafra Barbosa'},
+             {'Advogado': 'Carlos Pedrosa Mauricio da Rocha'}],
+            [{'Apelado': 'Manuel Francisco Gonzaga Filho'},
+             {'Advogado': 'Petrúcio Pereira Guedes'},
+             {'Advogada': 'Priscila Araújo Guedes'},
+             {'Advogado': 'Rodrigo Fireman Barros'}]
+        ]
+
+        assert expected == parsers.parts(second_parts)

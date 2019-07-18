@@ -46,5 +46,10 @@ def parts(process: HTML) -> Element:
 
 
 @pytest.fixture
+def second_parts(second_process: HTML) -> Element:
+    return second_process.find('#tablePartesPrincipais', first=True)
+
+
+@pytest.fixture
 def general_data(process: HTML) -> Element:
     return process.xpath("//table[contains(@class, 'secaoFormBody')]")[1]
