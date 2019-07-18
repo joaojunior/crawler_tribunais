@@ -120,3 +120,13 @@ class TestSecondGradeProcess:
         ]
 
         assert expected == parsers.parts(second_parts)
+
+    def test_parser_general_data_return_correct_dict(self,
+                                                     second_general_data):
+        expected = {'Classe': 'Apelação', 'Área ': 'Cível',
+                    'Assunto': 'Perdas e Danos',
+                    'Distribuição': 'Vice-Presidência',
+                    'Relator': 'DES. SEBASTIÃO COSTA FILHO',
+                    'Valor da ação': '380,00'}
+
+        assert expected == parsers.general_data(second_general_data)
