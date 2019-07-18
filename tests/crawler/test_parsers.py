@@ -54,7 +54,7 @@ class TestFirstGradeProcess:
         expected_keys = ['Dados do processo', 'Partes do processo',
                          'Movimentações']
 
-        actual = parsers.process(process)
+        actual = parsers.process(process.html)
         assert expected_keys == list(actual.keys())
 
     def test_parser_process_not_found_and_return_empty_values(
@@ -63,7 +63,7 @@ class TestFirstGradeProcess:
         expected = {'Dados do processo': {}, 'Partes do processo': [],
                     'Movimentações': []}
 
-        actual = parsers.process(process_not_found)
+        actual = parsers.process(process_not_found.html)
         assert expected == actual
 
 
