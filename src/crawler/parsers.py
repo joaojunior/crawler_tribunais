@@ -13,7 +13,8 @@ def process(process_data: requests_html.Element) -> Dict:
             "//table[contains(@class, 'secaoFormBody')]")[1]
         result['Dados do processo'] = general_data(process_general_data)
 
-        process_parts = process_data.find('#tableTodasPartes', first=True)
+        process_parts = process_data.find(
+            '#tableTodasPartes,#tablePartesPrincipais', first=True)
         result['Partes do processo'] = parts(process_parts)
 
         process_movements = process_data.find(
@@ -38,7 +39,8 @@ def parts(process_parts: requests_html.Element) -> List[List[Dict]]:
     result = []
     for row in rows:
         data = []
-        values = row.text.replace('\xa0 ', '').replace(':\n', ':').split('\n')
+        values = row.text.replace('\xa0 ', '').replace('\xa0', '').replace(
+            ':\n', ':').split('\n')
         for value in values:
             value = value.split(':')
             data.append({value[0]: value[1]})
@@ -48,12 +50,14 @@ def parts(process_parts: requests_html.Element) -> List[List[Dict]]:
 
 def general_data(process_general_data: requests_html.Element) -> Dict:
     result = {}
-    names = ['Classe', 'Área', 'Assunto', 'Distribuição', 'Juiz',
+    names = ['Classe', 'Área', 'Assunto', 'Distribuição', 'Juiz', 'Relator',
              'Valor da ação']
     for name in names:
         field = process_general_data.xpath(
-                f"//tr[contains(string(), '{name}:')]", first=True).text
-        field = field.replace(': ', ':\n')
-        field = field.split(':\n')
-        result[field[0]] = field[1]
+            f"//tr[contains(string(), '{name}')]", first=True)
+        if field:
+            field = field.text
+            field = field.replace(': ', ':\n')
+            field = field.split(':\n')
+            result[field[0]] = field[1]
     return result
