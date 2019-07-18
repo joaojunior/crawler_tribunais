@@ -65,3 +65,36 @@ class TestFirstGradeProcess:
 
         actual = parsers.process(process_not_found)
         assert expected == actual
+
+
+class TestSecondGradeProcess:
+    def test_parser_movements_return_correct_list(self, second_movements):
+        expected = [
+            {'data': '28/05/2019',
+             'movimento': ('Certidão Emitida\nCERTIDÃO Certifico que foi '
+                           'interposto Agravo em Recurso Especial da decisão '
+                           'de fls. 433-437. Certifico, ainda, que esse '
+                           'Agravo, foi recebido, no carimbo, em 27/05/2019, '
+                           'devido a problemas no saj/protocolo. Maceió, 28 '
+                           'de maio de 2019 Eleonora Paes Cerqueira de França '
+                           'Diretora Adjunta Especial de Assuntos Judiciários '
+                           'Fernanda Luiza de Albuquerque Brasil Lins Técnica '
+                           'Judiciária')},
+            {'data': '28/05/2019',
+             'movimento': 'Juntada de Petição de\nAgravo'},
+            {'data': '28/05/2019',
+             'movimento': 'Incidente Cadastrado\nSeq.: 50 - Agravo'},
+            {'data': '03/05/2019',
+             'movimento': ('Certidão Emitida\nCERTIFICO que foi '
+                           'disponibilizada no Diário da Justiça Eletrônico '
+                           'do Tribunal de Justiça de Alagoas em 03/05/2019 '
+                           'a decisão de fls. 433-437 e considerada publicada '
+                           'em 06/05/2019, nos termos do Artigo 4º, § 3º, da '
+                           'Lei nº 11.419/2006. Maceió, 03 de maio de 2019 '
+                           'Eleonora Paes Cerqueira de França Diretora '
+                           'Adjunta Especial de Assuntos Judiciários Fernanda '
+                           'Luiza de Albuquerque Brasil Lins Técnica '
+                           'Judiciária')},
+            {'data': '03/05/2019',
+             'movimento': 'Publicado\nDisponibilizado no DJE de 03/05/2019.'}]
+        assert expected == parsers.movements(second_movements)
