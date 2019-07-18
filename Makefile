@@ -3,3 +3,4 @@ run_tests:
 
 quality:
 	flake8 --filename=*.py src/ tests/
+	isort **/*.py -c -vb

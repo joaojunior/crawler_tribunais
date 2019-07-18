@@ -1,6 +1,5 @@
 import pytest
-
-from requests_html import Element, HTML
+from requests_html import HTML, Element
 
 
 @pytest.fixture()
