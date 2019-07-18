@@ -3,7 +3,8 @@ from typing import Dict, List
 import requests_html
 
 
-def process(process_data: requests_html.Element) -> Dict:
+def process(process_data: str) -> Dict:
+    process_data = requests_html.HTML(html=process_data)
     result = {'Dados do processo': {}, 'Partes do processo': [],
               'Movimentações': []}
     not_found = ('Não existem informações disponíveis para os '
