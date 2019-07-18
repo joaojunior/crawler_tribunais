@@ -10,7 +10,7 @@ app = Flask(__name__)
 api = Api(app)
 
 
-class HelloWorld(Resource):
+class Process(Resource):
     TJAL = '8.02'
     TJMS = '8.12'
 
@@ -38,7 +38,7 @@ class HelloWorld(Resource):
                         '2 Grau': grade_2})
 
 
-api.add_resource(HelloWorld, '/<string:process_number>')
+api.add_resource(Process, '/<string:process_number>')
 
 if __name__ == '__main__':
     app.run(debug=True)
