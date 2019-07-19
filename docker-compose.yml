@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "${API_PORT:-4000}:4000"
+  db:
+    image: postgres:11.4
+    ports:
+      - "${HEALTHDB:-3309}:3306"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
