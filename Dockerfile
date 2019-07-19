@@ -4,6 +4,7 @@ WORKDIR /code
 ADD requirements.txt /code
 RUN pip install -r requirements.txt
 ADD src/api /code/src/api
+ADD scripts/db.sh /code/src/api
 ADD src/crawler /code/src/crawler
 ADD tests /code/tests
 ENV FLASK_APP api/app.py
