@@ -41,12 +41,21 @@ def crawler_task(process_number: str, grade: int):
 @celery_app.task(queue='parser', exchange='parser',
                  soft_time_limit=30, time_limit=30+10, max_retries=5)
 def parser_task(file_id: str):
-    raw_html = RawHTML.query.get(file_id)
-    parsed_data = parsers.process(raw_html.html)
-    process = Process.query.get(raw_html.process_number)
-    if raw_html.grade == 1:
-        process.grade1 = parsed_data
-    elif raw_html.grade == 2:
-        process.grade2 = parsed_data
-    db.session.add(process)
-    db.session.commit()
+    try:
+        raw_html = RawHTML.query.get(file_id)
+        parsed_data = parsers.process(raw_html.html)
+        process = Process.query.get(raw_html.process_number)
+        if raw_html.grade == 1:
+            process.grade1 = parsed_data
+        elif raw_html.grade == 2:
+            process.grade2 = parsed_data
+        db.session.add(process)
+        db.session.commit()
+    except (KeyError, IndexError):
+        logger.info((f'file:{file_id},process:{process.process_number}: '
+                     f'Error acessing some keys'),
+                    exc_info=True)
+    except Exception as error:
+        logger.error(f'Error during parser the file: {file_id}',
+                     exc_info=True)
+        raise error
