@@ -2,3 +2,9 @@ requests-html==0.10.0
 Flask==1.1.1
 Flask-RESTful==0.3.7
 gunicorn==19.9.0
+Flask-SQLAlchemy==2.4.0
+Flask-Script==2.0.6
+Flask-Migrate==2.5.2
+psycopg2-binary==2.8.3
+flask-marshmallow==0.10.1
+marshmallow-sqlalchemy==0.17.0
