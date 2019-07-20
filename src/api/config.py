@@ -1,2 +1,3 @@
-SQLALCHEMY_DATABASE_URI = (
-    'postgres://postgres:mysecretpassword@db:5432/postgres')
+import os
+
+SQLALCHEMY_DATABASE_URI = os.environ.get('API_DB')
