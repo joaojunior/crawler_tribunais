@@ -1,6 +1,12 @@
+from celery.utils.log import get_task_logger
+from requests.exceptions import ConnectTimeout
+
 from celery_app import celery_app
 from crawler import crawlers, parsers
 from models import db, RawHTML, Process
+
+
+logger = get_task_logger(__name__)
 
 
 @celery_app.task(queue='crawler', exchange='crawler',
@@ -15,15 +21,21 @@ def crawler_task(process_number: str, grade: int):
         (2, TJMS): crawlers.get_page_from_second_instance_TJMS,
     }
 
-    page = ''
-    identify = process_number[-9:-5]
-    method = methods.get((grade, identify))
-    page = method(process_number)
-    raw_html = RawHTML(process_number=process_number, grade=grade)
-    raw_html.html = page
-    db.session.add(raw_html)
-    db.session.commit()
-    parser_task.delay(raw_html.id)
+    try:
+        identify = process_number[-9:-5]
+        method = methods.get((grade, identify))
+        page = method(process_number)
+        raw_html = RawHTML(process_number=process_number, grade=grade)
+        raw_html.html = page
+        db.session.add(raw_html)
+        db.session.commit()
+        parser_task.delay(raw_html.id)
+    except ConnectTimeout:
+        logger.info(f'Timeout when crawler the process: {process_number}')
+    except Exception as error:
+        logger.error(f'Error during crawler the process: {process_number}',
+                     exc_info=True)
+        raise error
 
 
 @celery_app.task(queue='parser', exchange='parser',
