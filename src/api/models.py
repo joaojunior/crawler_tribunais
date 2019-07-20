@@ -13,7 +13,7 @@ db = SQLAlchemy()
 class RawHTML(db.Model):
     id = db.Column(UUID(as_uuid=True), primary_key=True,
                    default=uuid4)
-    number = db.Column(db.String(25))
+    process_number = db.Column(db.String(25))
     grade = db.Column(db.Integer)
     _html = db.Column(db.LargeBinary)
 
@@ -27,6 +27,6 @@ class RawHTML(db.Model):
 
 
 class Process(db.Model):
-    number = db.Column(db.String(25), primary_key=True)
+    process_number = db.Column(db.String(25), primary_key=True)
     grade1 = db.Column(JSONB)
     grade2 = db.Column(JSONB)
