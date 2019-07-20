@@ -11,6 +11,7 @@ services:
       - "${API_PORT:-4000}:4000"
     environment:
       API_DB: 'postgres://postgres:mysecretpassword@db:5432/postgres'
+      BROKER_URL: 'pyamqp://guest:guest@broker:5672'
     entrypoint: >
       bash -c "sh wait_components.sh
       && env PYTHONPATH=src python src/api/migrate.py db upgrade
@@ -22,3 +23,26 @@ services:
     restart: always
     environment:
       POSTGRES_PASSWORD: mysecretpassword
+  broker:
+    image: rabbitmq:3.7.16-management
+    restart: always
+  worker_crawler:
+    image: crawler_tribunais_api:latest
+    restart: always
+    environment:
+      API_DB: 'postgres://postgres:mysecretpassword@db:5432/postgres'
+      BROKER_URL: 'pyamqp://guest:guest@broker:5672'
+    entrypoint: >
+      bash -c "sh wait_components.sh
+      && cd src/api
+      && env PYTHONPATH=/code/src celery worker --hostname=crawler@%h -A app.celery_app -Q crawler --loglevel=info -c 4 -Ofair --prefetch-multiplier=1 --pidfile=crawler_%n.pid --logfile=%n_%h.log --max-tasks-per-child=100"
+  worker_parser:
+    image: crawler_tribunais_api:latest
+    restart: always
+    environment:
+      API_DB: 'postgres://postgres:mysecretpassword@db:5432/postgres'
+      BROKER_URL: 'pyamqp://guest:guest@broker:5672'
+    entrypoint: >
+      bash -c "sh wait_components.sh
+      && cd src/api
+      && env PYTHONPATH=/code/src celery worker --hostname=parser@%h -A app.celery_app -Q parser --loglevel=info -c 2 --pidfile=parser_%n.pid --logfile=%n_%h.log"
