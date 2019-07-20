@@ -1,5 +1,5 @@
 run_tests:
-	env PYTHONPATH=src pytest
+	docker-compose -f docker-compose.yml -f docker-compose.tests.yml up --build --exit-code-from api
 
 quality:
 	flake8 --filename=*.py src/ tests/

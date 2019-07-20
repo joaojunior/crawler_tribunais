@@ -1,11 +1,15 @@
+import os
+
 import pytest
 from requests_html import HTML, Element
+
+FIXTURE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 @pytest.fixture()
 def process() -> HTML:
     doc = ''
-    with open('tests/process.html') as f:
+    with open(os.path.join(FIXTURE_DIR, 'process.html')) as f:
         doc = f.read()
     html = HTML(html=doc)
     return html
@@ -14,7 +18,7 @@ def process() -> HTML:
 @pytest.fixture()
 def second_process() -> HTML:
     doc = ''
-    with open('tests/process_second.html') as f:
+    with open(os.path.join(FIXTURE_DIR, 'process_second.html')) as f:
         doc = f.read()
     html = HTML(html=doc)
     return html
@@ -23,7 +27,7 @@ def second_process() -> HTML:
 @pytest.fixture()
 def process_not_found() -> HTML:
     doc = ''
-    with open('tests/process_not_found.html') as f:
+    with open(os.path.join(FIXTURE_DIR, 'process_not_found.html')) as f:
         doc = f.read()
     html = HTML(html=doc)
     return html

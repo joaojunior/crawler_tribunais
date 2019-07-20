@@ -9,6 +9,10 @@ services:
       - db
     ports:
       - "${API_PORT:-4000}:4000"
+    entrypoint: >
+      bash -c "sh wait_components.sh
+      && env PYTHONPATH=src python src/api/migrate.py db upgrade
+      && sh run_api.sh"
   db:
     image: postgres:11.4
     ports:
