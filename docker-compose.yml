@@ -18,8 +18,6 @@ services:
       && sh run_api.sh"
   db:
     image: postgres:11.4
-    ports:
-      - "${HEALTHDB:-3309}:3306"
     restart: always
     environment:
       POSTGRES_PASSWORD: mysecretpassword
@@ -35,7 +33,7 @@ services:
     entrypoint: >
       bash -c "sh wait_components.sh
       && cd src/api
-      && env PYTHONPATH=/code/src celery worker --hostname=crawler@%h -A app.celery_app -Q crawler --loglevel=info -c 4 -Ofair --prefetch-multiplier=1 --pidfile=crawler_%n.pid --logfile=%n_%h.log --max-tasks-per-child=100"
+      && env PYTHONPATH=/code/src celery worker --hostname=crawler@%h -A app.celery_app -Q crawler --loglevel=info -c 4 -Ofair --prefetch-multiplier=1 --logfile=%n_%h.log --max-tasks-per-child=100"
   worker_parser:
     image: crawler_tribunais_api:latest
     restart: always
@@ -45,4 +43,15 @@ services:
     entrypoint: >
       bash -c "sh wait_components.sh
       && cd src/api
-      && env PYTHONPATH=/code/src celery worker --hostname=parser@%h -A app.celery_app -Q parser --loglevel=info -c 2 --pidfile=parser_%n.pid --logfile=%n_%h.log"
+      && env PYTHONPATH=/code/src celery worker --hostname=parser@%h -A app.celery_app -Q parser --loglevel=info -c 2 --logfile=%n_%h.log"
+  flower:
+    image: crawler_tribunais_api:latest
+    restart: always
+    environment:
+      BROKER_URL: 'pyamqp://guest:guest@broker:5672'
+    entrypoint: >
+      bash -c "sh wait_components.sh
+      && cd src/api
+      && env PYTHONPATH=/code/src celery -A app.celery_app flower --address=0.0.0.0"
+    ports:
+      - "${FLOWER_PORT:-5555}:5555"

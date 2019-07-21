@@ -5,4 +5,18 @@ services:
     entrypoint: >
       bash -c "pip install -r requirements_tests.txt
       && sh wait_components.sh
+      && dockerize -wait tcp://dbtest:5432 -timeout 60s
       && env PYTHONPATH=src:src/api pytest"
+    environment:
+      API_DB: 'postgres://postgres:mysecretpassword@dbtest:5432/postgres'
+  dbtest:
+    image: postgres:11.4
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: mysecretpassword
+  worker_crawler:
+    environment:
+      API_DB: 'postgres://postgres:mysecretpassword@dbtest:5432/postgres'
+  worker_parser:
+    environment:
+      API_DB: 'postgres://postgres:mysecretpassword@dbtest:5432/postgres'
