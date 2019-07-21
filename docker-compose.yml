@@ -18,8 +18,6 @@ services:
       && sh run_api.sh"
   db:
     image: postgres:11.4
-    ports:
-      - "${HEALTHDB:-3309}:3306"
     restart: always
     environment:
       POSTGRES_PASSWORD: mysecretpassword
