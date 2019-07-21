@@ -1,5 +1,7 @@
 from unittest.mock import Mock, patch
 
+from api.models import Process
+
 
 def test_process_number_invalid(client):
     process_number = '2'
@@ -24,6 +26,10 @@ def test_process_not_pertence_tjal_and_tjms(client):
 
 @patch('crawler.crawlers.HTMLSession')
 def test_process_pertence_tjal(mock_session, process, client):
+    process_number = '0710802-55.2018.8.02.0001'
+    process1 = Process(process_number=process_number)
+    client.db.session.add(process1)
+    client.db.session.commit()
     instance = mock_session.return_value
     html_response = Mock(html=process)
     instance.get.return_value = html_response
@@ -37,6 +43,10 @@ def test_process_pertence_tjal(mock_session, process, client):
 
 @patch('crawler.crawlers.HTMLSession')
 def test_process_pertence_tjms(mock_session, process, client):
+    process_number = '0710802-55.2018.8.12.0001'
+    process1 = Process(process_number=process_number)
+    client.db.session.add(process1)
+    client.db.session.commit()
     instance = mock_session.return_value
     html_response = Mock(html=process)
     instance.get.return_value = html_response
