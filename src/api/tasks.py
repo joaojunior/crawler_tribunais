@@ -1,5 +1,5 @@
 from celery.utils.log import get_task_logger
-from requests.exceptions import ConnectTimeout
+from requests.exceptions import ConnectTimeout, ReadTimeout
 
 from celery_app import celery_app
 from crawler import crawlers, parsers
@@ -30,7 +30,7 @@ def crawler_task(process_number: str, grade: int):
         db.session.add(raw_html)
         db.session.commit()
         parser_task.delay(raw_html.id)
-    except ConnectTimeout:
+    except (ConnectTimeout, ReadTimeout):
         logger.info(f'Timeout when crawler the process: {process_number}')
     except Exception as error:
         logger.error(f'Error during crawler the process: {process_number}',
@@ -52,8 +52,7 @@ def parser_task(file_id: str):
         db.session.add(process)
         db.session.commit()
     except (KeyError, IndexError):
-        logger.info((f'file:{file_id},process:{process.process_number}: '
-                     f'Error acessing some keys'),
+        logger.info(f'file:{file_id}: Error acessing some keys',
                     exc_info=True)
     except Exception as error:
         logger.error(f'Error during parser the file: {file_id}',
