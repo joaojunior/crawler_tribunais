@@ -12,7 +12,6 @@ def client():
         app.db.create_all()
         client.db = app.db
         yield client
-        # app.db.drop_all()
         meta = app.db.metadata
         for table in reversed(meta.sorted_tables):
             app.db.session.execute(table.delete())
