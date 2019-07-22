@@ -1,0 +1,19 @@
+sudo: required
+
+services:
+  - docker
+
+env:
+  COMPOSE_VERSION: 1.4.2
+
+before_install:
+ - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+ - chmod +x docker-compose
+ - sudo mv docker-compose /usr/local/bin
+
+script:
+  - docker-compose -f docker-compose.yml -f docker-compose.tests.yml up --build --exit-code-from api
+
+notifications:
+  email:
+    - travis@joaojunior.org
