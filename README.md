@@ -40,7 +40,7 @@ Depois, desse comando você vai receber a resposta:
 ```
 {"grade1":null,"grade2":null,"process_number":"0710802-55.2018.8.02.0001"}
 ```
-Essa resposta indica que o processo não está no banco de dados e uma tarefa assíncrona foi disparada para baixar e formatar esse processp.
+Essa resposta indica que o processo não está no banco de dados e uma tarefa assíncrona foi disparada para baixar e formatar esse processo.
 Aguarde alguns segundos e efetue novamente o mesmo request e você receberá os dados do processo.
 
 # Rodar o script para gerar números de processo e efetuar o download:
