@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 
-from celery_app import celery_app
+from api import celery_app
 from models import db
 from resources import ProcessResource
 from schemas import ma

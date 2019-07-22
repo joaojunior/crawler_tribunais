@@ -1,7 +1,7 @@
 from celery.utils.log import get_task_logger
 from requests.exceptions import ConnectTimeout, ReadTimeout
 
-from celery_app import celery_app
+from api import celery_app
 from crawler import crawlers, parsers
 from models import db, RawHTML, Process
 
@@ -23,13 +23,16 @@ def crawler_task(process_number: str, grade: int):
 
     try:
         identify = process_number[-9:-5]
-        method = methods.get((grade, identify))
-        page = method(process_number)
-        raw_html = RawHTML(process_number=process_number, grade=grade)
-        raw_html.html = page
-        db.session.add(raw_html)
-        db.session.commit()
-        parser_task.delay(raw_html.id)
+        method = methods.get((grade, identify), None)
+        if method is None:
+            logger.info(f'Process:{process_number} is from uncovered location')
+        else:
+            page = method(process_number)
+            raw_html = RawHTML(process_number=process_number, grade=grade)
+            raw_html.html = page
+            db.session.add(raw_html)
+            db.session.commit()
+            parser_task.delay(raw_html.id)
     except (ConnectTimeout, ReadTimeout):
         logger.info(f'Timeout when crawler the process: {process_number}')
     except Exception as error:
