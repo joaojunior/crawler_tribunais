@@ -26,9 +26,10 @@ class ProcessResource(Resource):
         if len(process_number) != 25:
             return False
         try:
-            digits = int(process_number[8:10])
+            final = process_number.find('.')
+            digits = int((process_number[8:final]).replace('-', ''))
             calculated_process_number = (f'{process_number[:8]}'
-                                         f'{process_number[11:]}00')
+                                         f'{process_number[final:]}00')
             calculated_process_number = int(calculated_process_number.replace(
                 '.', '').replace('-', ''))
             digits_calculated = 98 - (calculated_process_number % 97)
