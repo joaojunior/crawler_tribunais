@@ -13,19 +13,19 @@ def test_process_number_invalid(client):
     assert expected == r.json
 
 
-def test_process_not_pertence_tjal_and_tjms(client):
-    process_number = '0710802-55.2018.9.12.0001'
+def test_process_number_size_equal_but_invalid(client):
+    process_number = 'a' * 25
 
     r = client.get(f'/{process_number}')
 
     expected = {'msg':
-                f'Processo {process_number } não pertence a TJAL ou TJMS'}
+                f'Número do processo {process_number} inválido'}
     assert 422 == r.status_code
     assert expected == r.json
 
 
 @patch('crawler.crawlers.HTMLSession')
-def test_process_pertence_tjal(mock_session, process, client):
+def test_process_belongs_to_tjal(mock_session, process, client):
     process_number = '0710802-55.2018.8.02.0001'
     client.db.session.add(Process(process_number=process_number))
     client.db.session.commit()
@@ -39,8 +39,8 @@ def test_process_pertence_tjal(mock_session, process, client):
 
 
 @patch('crawler.crawlers.HTMLSession')
-def test_process_pertence_tjms(mock_session, process, client):
-    process_number = '0710802-55.2018.8.12.0001'
+def test_process_belongs_to_tjms(mock_session, process, client):
+    process_number = '0821901-51.2018.8.12.0001'
     client.db.session.add(Process(process_number=process_number))
     client.db.session.commit()
     instance = mock_session.return_value
