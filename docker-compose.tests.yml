@@ -6,9 +6,13 @@ services:
       bash -c "pip install -r requirements_tests.txt
       && sh wait_components.sh
       && dockerize -wait tcp://dbtest:5432 -timeout 60s
-      && env PYTHONPATH=src:src/api pytest"
+      && env PYTHONPATH=src:src/api pytest --cov=src --cov-report xml:report/coverage.xml"
+    volumes:
+      - $PWD/report:/code/report
     environment:
       API_DB: 'postgres://postgres:mysecretpassword@dbtest:5432/postgres'
+      CODECOV_TOKEN:
+      ci_env:
   dbtest:
     image: postgres:11.4
     restart: always
