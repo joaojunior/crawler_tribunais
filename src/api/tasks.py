@@ -1,7 +1,7 @@
 from celery.utils.log import get_task_logger
 from requests.exceptions import ConnectTimeout, ReadTimeout
 
-from celery_app import celery_app
+from api import celery_app
 from crawler import crawlers, parsers
 from models import db, RawHTML, Process
 
