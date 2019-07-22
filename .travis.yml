@@ -14,7 +14,8 @@ before_install:
  - sudo mv docker-compose /usr/local/bin
 
 script:
-  - docker-compose -f docker-compose.yml -f docker-compose.tests.yml up --build --exit-code-from api
+  - docker-compose -f docker-compose.yml -f docker-compose.tests.yml build
+  - docker-compose -f docker-compose.yml -f docker-compose.tests.yml up --exit-code-from api
 
 notifications:
   email:
