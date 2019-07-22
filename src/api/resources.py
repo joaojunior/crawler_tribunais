@@ -6,18 +6,10 @@ from tasks import crawler_task
 
 
 class ProcessResource(Resource):
-    TJAL = '8.02'
-    TJMS = '8.12'
-
     def get(self, process_number):
-        if len(process_number) != 25:
+        if self._process_number_is_valid(process_number) is False:
             return {
                 'msg': f'Número do processo {process_number} inválido'}, 422
-        identify = process_number[-9:-5]
-        if identify != self.TJAL and identify != self.TJMS:
-            return {'msg':
-                    f'Processo {process_number} não pertence a TJAL ou TJMS'
-                    }, 422
         process = Process.query.get(process_number)
         if process is None:
             process = Process(process_number=process_number)
@@ -28,3 +20,18 @@ class ProcessResource(Resource):
 
         process_schema = ProcessSchema()
         return process_schema.jsonify(process)
+
+    @staticmethod
+    def _process_number_is_valid(process_number: str) -> bool:
+        if len(process_number) != 25:
+            return False
+        try:
+            digits = int(process_number[8:10])
+            calculated_process_number = (f'{process_number[:8]}'
+                                         f'{process_number[11:]}00')
+            calculated_process_number = int(calculated_process_number.replace(
+                '.', '').replace('-', ''))
+            digits_calculated = 98 - (calculated_process_number % 97)
+        except Exception:
+            return False
+        return digits == digits_calculated
