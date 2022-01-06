@@ -9,5 +9,5 @@ psycopg2-binary==2.8.3
 flask-marshmallow==0.10.1
 marshmallow-sqlalchemy==0.17.0
 PyAMQP==0.0.8.1
-celery==4.3.0
+celery==5.2.2
 flower==0.9.3
