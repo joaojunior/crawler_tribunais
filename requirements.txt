@@ -10,4 +10,4 @@ flask-marshmallow==0.10.1
 marshmallow-sqlalchemy==0.17.0
 PyAMQP==0.0.8.1
 celery==4.3.0
-flower==0.9.3
+flower==1.2.0
